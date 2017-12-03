@@ -1,0 +1,82 @@
+#IP = "192.168.59.142"       #IPv4 is saved as string
+#octets = IP.split(".")      #IPv4 is splitted into Octets LIST
+
+#check the number of octets in IPV4, IPv4 must be = 4 Octets
+#len() Function returns number of elements in LIST without counting zeroi
+def IPsplit(octets):
+    if len(octets) < 4:
+        print("(1st CHECK = FAILURE): Please check IPv4 Address format: Error = Missing Octet")
+    elif len(octets) > 4:
+        print("(1st CHECK = FAILURE): Please check IPv4 Address format: Error = Extra Octets")
+    else:
+        print("(1st CHECK = SUCCESS): Correct IP Format 4 octets")
+
+#convert string LIST to int LIST for further condition checking
+def IPconv_to_int(octets):
+    for i in range(len(octets)):
+        octets[i] = int(octets[i])
+
+#quick check that every octet is in range
+def IP_range_check(octets):
+    j = 0
+    for i in range(len(octets)):
+        if octets[i] >= 0 and octets[i] <=255:
+            j += 1
+            continue
+        else:
+            print("check %s octet format" %i)
+
+    if j == 4:
+        print("(2nd CHECK = SUCCESS): Octet Range check is Successfull 0 < octet < 224")
+    else:
+        print("(2nd CHECK = FAILURE): octet range is not valid")
+   
+
+#check if IP Address is CLASS A,B,C from the first Octet
+def IP_class(octets,flag):
+    if octets[0] > 0 and octets[0] < 127:
+        print("(3rd CHECK = SUCCESS): CLASS A IP Address")
+        flag = True
+    elif octets[0] > 127 and octets[0] < 192:
+        print("(3rd CHECK = SUCCESS): CLASS B IP Address")
+        flag = True
+    elif octets[0] > 191 and octets[0] < 224:
+        print("(3rd CHECK = SUCCESS): CLASS C IP Address")
+        flag = True
+    else:
+        print("(3rd CHECK = FAILURE): Wrong IP Address")
+        flag = False
+    return flag
+
+#check if IP Address is in Private Range
+def IP_private(octets,flag):
+    if octets[0] == 10 and flag == True:
+        print("(4th CHECK = SUCCESS): PRIVATE IP ADDRESS : CLASS A")
+    elif octets[0] == 172 and octets[1] >= 16 and octets[1] <=32 and flag == True:
+        print("(4th CHECK = SUCCESS): PRIVATE IP ADDRESS : CLASS B")
+    elif octets[0] == 192 and octets[1] == 168 and flag == True:
+        print("(4th CHECK = SUCCESS): PRIVATE IP ADDRESS : CLASS C")
+    elif octets[0] == 127 and flag == True:
+        print("(4th CHECK = SUCCESS): LOOPBACK IP Address")
+    elif flag == True:
+        print("(4th CHECK = SUCCESS): PUBLIC IP ADDRESS")
+    else:
+        print("(4th CHECK = FAILURE): Wrong IP Address")
+
+if __name__ == '__main__':
+   
+    flag = True
+    print("This Simple Program has below 4 checks")
+    print("1st CHECK: Number of IP Octets is 4 ")
+    print("2nd CHECK: IP Octets shoud be 0 < octets < 224")
+    print("3rd CHECK: CLASS A, B, C IP Address")
+    print("4th CHECK: PRIVATE or PUBLIC IP Address\n")
+    IP = input("PLEASE ENTER YOUR IP ADDRESS: ")
+    octets = IP.split(".")
+    IPsplit(octets)
+    IPconv_to_int(octets)
+    IP_range_check(octets)
+    flag = IP_class(octets,flag)
+    IP_private(octets,flag)
+
+    
